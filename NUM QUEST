@@ -1,0 +1,398 @@
+classdef game < matlab.apps.AppBase
+
+    % Properties that correspond to app components
+    properties (Access = public)
+        UIFigure                       matlab.ui.Figure
+        GAMEOVERPanel                  matlab.ui.container.Panel
+        QUITButton_2                   matlab.ui.control.Button
+        PLAYAGAINButton                matlab.ui.control.Button
+        RESULTEditField                matlab.ui.control.EditField
+        RESULTEditFieldLabel           matlab.ui.control.Label
+        GAMEPanel                      matlab.ui.container.Panel
+        QUITButton                     matlab.ui.control.Button
+        SUBMITButton                   matlab.ui.control.Button
+        COMPUTERDIGITEditField         matlab.ui.control.NumericEditField
+        COMPUTERDIGITEditFieldLabel    matlab.ui.control.Label
+        ENTERADIGITEditField           matlab.ui.control.NumericEditField
+        ENTERADIGITEditFieldLabel      matlab.ui.control.Label
+        SCORELabel                     matlab.ui.control.Label
+        COMPUTEREditField              matlab.ui.control.NumericEditField
+        COMPUTEREditFieldLabel         matlab.ui.control.Label
+        YOUEditField                   matlab.ui.control.NumericEditField
+        YOUEditFieldLabel              matlab.ui.control.Label
+        ROUNDEditField                 matlab.ui.control.NumericEditField
+        ROUNDEditFieldLabel            matlab.ui.control.Label
+        SETTINGSPANELPanel             matlab.ui.container.Panel
+        PLAYButton                     matlab.ui.control.Button
+        ENTERNUMBEROFROUNDSSpinner     matlab.ui.control.Spinner
+        ENTERNUMBEROFROUNDSSpinnerLabel  matlab.ui.control.Label
+        ENTERPLAYERNAMEEditField       matlab.ui.control.EditField
+        ENTERPLAYERNAMEEditFieldLabel  matlab.ui.control.Label
+        STARTGAMEPANELPanel            matlab.ui.container.Panel
+        STARTGAMEButton                matlab.ui.control.Button
+        NUMQUESTLabel                  matlab.ui.control.Label
+    end
+
+    % Callbacks that handle component events
+    methods (Access = private)
+
+        % Callback function
+        function STARTGAMEButtonPushed(app, event)
+            
+        end
+
+        % Button pushed function: STARTGAMEButton
+        function STARTGAMEButtonPushed2(app, event)
+             app.STARTGAMEPANELPanel.Visible="off";
+             app.SETTINGSPANELPanel.Visible="on";
+
+        end
+
+        % Button pushed function: PLAYButton
+        function PLAYButtonPushed(app, event)
+            app.SETTINGSPANELPanel.Visible="off";
+            app.GAMEPanel.Visible="on";
+        end
+
+        % Button pushed function: QUITButton
+        function QUITButtonPushed(app, event)
+            app.GAMEPanel.Visible="off";
+                 app.STARTGAMEPANELPanel.Visible="on";
+                 app.COMPUTERDIGITEditField.Value=0;
+            app.COMPUTEREditField.Value=0;
+            app.ENTERADIGITEditField.Value=0;
+          
+            
+            app.ROUNDEditField.Value=0;
+            app.YOUEditField.Value=0;
+            app.RESULTEditField.Value='';
+        end
+
+        % Button pushed function: QUITButton_2
+        function QUITButton_2Pushed(app, event)
+            app.GAMEOVERPanel.Visible="off";
+            app.STARTGAMEPANELPanel.Visible="on";
+            app.COMPUTERDIGITEditField.Value=0;
+            app.COMPUTEREditField.Value=0;
+            app.ENTERADIGITEditField.Value=0;
+          
+            
+            app.ROUNDEditField.Value=0;
+            app.YOUEditField.Value=0;
+            app.RESULTEditField.Value='';
+        end
+
+        % Button pushed function: PLAYAGAINButton
+        function PLAYAGAINButtonPushed(app, event)
+            app.GAMEOVERPanel.Visible="off";
+            app.SETTINGSPANELPanel.Visible="on";
+            app.COMPUTERDIGITEditField.Value=0;
+            app.COMPUTEREditField.Value=0;
+            app.ENTERADIGITEditField.Value=0;
+          
+            
+            app.ROUNDEditField.Value=0;
+            app.YOUEditField.Value=0;
+            app.RESULTEditField.Value='';
+        end
+
+        % Button pushed function: SUBMITButton
+        function SUBMITButtonPushed(app, event)
+            n=app.ENTERADIGITEditField.Value;
+            while app.ROUNDEditField.Value<app.ENTERNUMBEROFROUNDSSpinner.Value
+                nr=randi(10);
+                app.COMPUTERDIGITEditField.Value=nr;
+                app.ROUNDEditField.Value=app.ROUNDEditField.Value+1;
+                if n>nr
+                    app.YOUEditField.Value=app.YOUEditField.Value+1;
+                    break;
+                elseif n<nr
+                    app.COMPUTEREditField.Value=app.COMPUTEREditField.Value+1;
+                    break;
+                else
+                    app.YOUEditField.Value=app.YOUEditField.Value+1;
+                    app.COMPUTEREditField.Value=app.COMPUTEREditField.Value+1;
+                    break;
+                end
+            end
+            if (app.ROUNDEditField.Value+1)>app.ENTERNUMBEROFROUNDSSpinner.Value
+                 app.GAMEPanel.Visible="off";
+                 app.GAMEOVERPanel.Visible="on";
+                 if app.YOUEditField.Value>app.COMPUTEREditField.Value
+                     app.RESULTEditField.Value=sprintf('CONGRATULATIONS!! %s FOR WINNING', app.ENTERPLAYERNAMEEditField.Value);
+                 elseif app.YOUEditField.Value<app.COMPUTEREditField.Value
+                     app.RESULTEditField.Value=sprintf('BETTER LUCK NEXT TIME %s!!',app.ENTERPLAYERNAMEEditField.Value);
+                 else 
+                     app.RESULTEditField.Value=sprintf("IT'S A TIE!!");
+                 end
+            end
+
+                   
+        end
+    end
+
+    % Component initialization
+    methods (Access = private)
+
+        % Create UIFigure and components
+        function createComponents(app)
+
+            % Create UIFigure and hide until all components are created
+            app.UIFigure = uifigure('Visible', 'off');
+            app.UIFigure.Color = [0.8784 0.4784 0.6706];
+            app.UIFigure.Position = [100 100 640 480];
+            app.UIFigure.Name = 'MATLAB App';
+
+            % Create STARTGAMEPANELPanel
+            app.STARTGAMEPANELPanel = uipanel(app.UIFigure);
+            app.STARTGAMEPANELPanel.TitlePosition = 'centertop';
+            app.STARTGAMEPANELPanel.Title = 'START GAME PANEL';
+            app.STARTGAMEPANELPanel.BackgroundColor = [0.749 0.9804 0.9608];
+            app.STARTGAMEPANELPanel.Position = [1 1 640 480];
+
+            % Create NUMQUESTLabel
+            app.NUMQUESTLabel = uilabel(app.STARTGAMEPANELPanel);
+            app.NUMQUESTLabel.VerticalAlignment = 'top';
+            app.NUMQUESTLabel.FontName = 'Comic Sans MS';
+            app.NUMQUESTLabel.FontSize = 100;
+            app.NUMQUESTLabel.FontAngle = 'italic';
+            app.NUMQUESTLabel.Position = [-1 190 699 130];
+            app.NUMQUESTLabel.Text = 'NUM QUEST';
+
+            % Create STARTGAMEButton
+            app.STARTGAMEButton = uibutton(app.STARTGAMEPANELPanel, 'push');
+            app.STARTGAMEButton.ButtonPushedFcn = createCallbackFcn(app, @STARTGAMEButtonPushed2, true);
+            app.STARTGAMEButton.BackgroundColor = [0.9882 0.6392 0.9882];
+            app.STARTGAMEButton.FontName = 'Courier New';
+            app.STARTGAMEButton.FontSize = 18;
+            app.STARTGAMEButton.FontWeight = 'bold';
+            app.STARTGAMEButton.Position = [253 90 133 38];
+            app.STARTGAMEButton.Text = 'START GAME';
+
+            % Create SETTINGSPANELPanel
+            app.SETTINGSPANELPanel = uipanel(app.UIFigure);
+            app.SETTINGSPANELPanel.TitlePosition = 'centertop';
+            app.SETTINGSPANELPanel.Title = 'SETTINGS PANEL';
+            app.SETTINGSPANELPanel.Visible = 'off';
+            app.SETTINGSPANELPanel.BackgroundColor = [0.749 0.9804 0.9608];
+            app.SETTINGSPANELPanel.Position = [1 1 640 480];
+
+            % Create ENTERPLAYERNAMEEditFieldLabel
+            app.ENTERPLAYERNAMEEditFieldLabel = uilabel(app.SETTINGSPANELPanel);
+            app.ENTERPLAYERNAMEEditFieldLabel.HorizontalAlignment = 'right';
+            app.ENTERPLAYERNAMEEditFieldLabel.Position = [197 305 133 22];
+            app.ENTERPLAYERNAMEEditFieldLabel.Text = 'ENTER PLAYER NAME';
+
+            % Create ENTERPLAYERNAMEEditField
+            app.ENTERPLAYERNAMEEditField = uieditfield(app.SETTINGSPANELPanel, 'text');
+            app.ENTERPLAYERNAMEEditField.FontName = 'Courier New';
+            app.ENTERPLAYERNAMEEditField.BackgroundColor = [0.749 0.8902 0.8392];
+            app.ENTERPLAYERNAMEEditField.Position = [345 305 100 22];
+
+            % Create ENTERNUMBEROFROUNDSSpinnerLabel
+            app.ENTERNUMBEROFROUNDSSpinnerLabel = uilabel(app.SETTINGSPANELPanel);
+            app.ENTERNUMBEROFROUNDSSpinnerLabel.HorizontalAlignment = 'right';
+            app.ENTERNUMBEROFROUNDSSpinnerLabel.Position = [176 272 176 22];
+            app.ENTERNUMBEROFROUNDSSpinnerLabel.Text = 'ENTER NUMBER OF ROUNDS';
+
+            % Create ENTERNUMBEROFROUNDSSpinner
+            app.ENTERNUMBEROFROUNDSSpinner = uispinner(app.SETTINGSPANELPanel);
+            app.ENTERNUMBEROFROUNDSSpinner.Limits = [1 5];
+            app.ENTERNUMBEROFROUNDSSpinner.FontName = 'Courier New';
+            app.ENTERNUMBEROFROUNDSSpinner.BackgroundColor = [0.749 0.8902 0.8392];
+            app.ENTERNUMBEROFROUNDSSpinner.Position = [366 272 100 22];
+            app.ENTERNUMBEROFROUNDSSpinner.Value = 1;
+
+            % Create PLAYButton
+            app.PLAYButton = uibutton(app.SETTINGSPANELPanel, 'push');
+            app.PLAYButton.ButtonPushedFcn = createCallbackFcn(app, @PLAYButtonPushed, true);
+            app.PLAYButton.BackgroundColor = [0.9882 0.6392 0.9882];
+            app.PLAYButton.FontName = 'Courier New';
+            app.PLAYButton.FontWeight = 'bold';
+            app.PLAYButton.Position = [271 100 100 22];
+            app.PLAYButton.Text = 'PLAY';
+
+            % Create GAMEPanel
+            app.GAMEPanel = uipanel(app.UIFigure);
+            app.GAMEPanel.TitlePosition = 'centertop';
+            app.GAMEPanel.Title = 'GAME';
+            app.GAMEPanel.Visible = 'off';
+            app.GAMEPanel.BackgroundColor = [0.749 0.9804 0.9608];
+            app.GAMEPanel.Position = [1 1 640 480];
+
+            % Create ROUNDEditFieldLabel
+            app.ROUNDEditFieldLabel = uilabel(app.GAMEPanel);
+            app.ROUNDEditFieldLabel.HorizontalAlignment = 'right';
+            app.ROUNDEditFieldLabel.FontWeight = 'bold';
+            app.ROUNDEditFieldLabel.Position = [302 417 52 22];
+            app.ROUNDEditFieldLabel.Text = 'ROUND ';
+
+            % Create ROUNDEditField
+            app.ROUNDEditField = uieditfield(app.GAMEPanel, 'numeric');
+            app.ROUNDEditField.HorizontalAlignment = 'center';
+            app.ROUNDEditField.FontName = 'Courier New';
+            app.ROUNDEditField.FontSize = 36;
+            app.ROUNDEditField.FontWeight = 'bold';
+            app.ROUNDEditField.Position = [310 376 36 46];
+
+            % Create YOUEditFieldLabel
+            app.YOUEditFieldLabel = uilabel(app.GAMEPanel);
+            app.YOUEditFieldLabel.HorizontalAlignment = 'center';
+            app.YOUEditFieldLabel.FontWeight = 'bold';
+            app.YOUEditFieldLabel.Position = [281 86 31 22];
+            app.YOUEditFieldLabel.Text = 'YOU';
+
+            % Create YOUEditField
+            app.YOUEditField = uieditfield(app.GAMEPanel, 'numeric');
+            app.YOUEditField.HorizontalAlignment = 'center';
+            app.YOUEditField.FontSize = 24;
+            app.YOUEditField.FontWeight = 'bold';
+            app.YOUEditField.Position = [281 59 36 32];
+
+            % Create COMPUTEREditFieldLabel
+            app.COMPUTEREditFieldLabel = uilabel(app.GAMEPanel);
+            app.COMPUTEREditFieldLabel.HorizontalAlignment = 'right';
+            app.COMPUTEREditFieldLabel.FontWeight = 'bold';
+            app.COMPUTEREditFieldLabel.Position = [348 86 74 22];
+            app.COMPUTEREditFieldLabel.Text = 'COMPUTER';
+
+            % Create COMPUTEREditField
+            app.COMPUTEREditField = uieditfield(app.GAMEPanel, 'numeric');
+            app.COMPUTEREditField.HorizontalAlignment = 'center';
+            app.COMPUTEREditField.FontSize = 24;
+            app.COMPUTEREditField.FontWeight = 'bold';
+            app.COMPUTEREditField.Position = [367 59 36 32];
+
+            % Create SCORELabel
+            app.SCORELabel = uilabel(app.GAMEPanel);
+            app.SCORELabel.BackgroundColor = [0.8549 0.5333 0.8902];
+            app.SCORELabel.HorizontalAlignment = 'center';
+            app.SCORELabel.FontName = 'Courier New';
+            app.SCORELabel.FontSize = 14;
+            app.SCORELabel.FontWeight = 'bold';
+            app.SCORELabel.Position = [200 63 70 22];
+            app.SCORELabel.Text = 'SCORE';
+
+            % Create ENTERADIGITEditFieldLabel
+            app.ENTERADIGITEditFieldLabel = uilabel(app.GAMEPanel);
+            app.ENTERADIGITEditFieldLabel.HorizontalAlignment = 'right';
+            app.ENTERADIGITEditFieldLabel.FontSize = 24;
+            app.ENTERADIGITEditFieldLabel.Position = [174 270 177 31];
+            app.ENTERADIGITEditFieldLabel.Text = 'ENTER A DIGIT';
+
+            % Create ENTERADIGITEditField
+            app.ENTERADIGITEditField = uieditfield(app.GAMEPanel, 'numeric');
+            app.ENTERADIGITEditField.Limits = [0 9];
+            app.ENTERADIGITEditField.FontName = 'Courier New';
+            app.ENTERADIGITEditField.FontSize = 24;
+            app.ENTERADIGITEditField.BackgroundColor = [1 1 0.0667];
+            app.ENTERADIGITEditField.Position = [366 269 100 32];
+
+            % Create COMPUTERDIGITEditFieldLabel
+            app.COMPUTERDIGITEditFieldLabel = uilabel(app.GAMEPanel);
+            app.COMPUTERDIGITEditFieldLabel.HorizontalAlignment = 'right';
+            app.COMPUTERDIGITEditFieldLabel.FontSize = 24;
+            app.COMPUTERDIGITEditFieldLabel.Position = [137 231 214 31];
+            app.COMPUTERDIGITEditFieldLabel.Text = 'COMPUTER DIGIT';
+
+            % Create COMPUTERDIGITEditField
+            app.COMPUTERDIGITEditField = uieditfield(app.GAMEPanel, 'numeric');
+            app.COMPUTERDIGITEditField.FontName = 'Courier New';
+            app.COMPUTERDIGITEditField.FontSize = 24;
+            app.COMPUTERDIGITEditField.BackgroundColor = [1 1 0.0667];
+            app.COMPUTERDIGITEditField.Position = [366 230 100 32];
+
+            % Create SUBMITButton
+            app.SUBMITButton = uibutton(app.GAMEPanel, 'push');
+            app.SUBMITButton.ButtonPushedFcn = createCallbackFcn(app, @SUBMITButtonPushed, true);
+            app.SUBMITButton.IconAlignment = 'center';
+            app.SUBMITButton.BackgroundColor = [0 1 0];
+            app.SUBMITButton.FontName = 'Courier New';
+            app.SUBMITButton.FontSize = 24;
+            app.SUBMITButton.FontWeight = 'bold';
+            app.SUBMITButton.Position = [274 150 107 38];
+            app.SUBMITButton.Text = 'SUBMIT';
+
+            % Create QUITButton
+            app.QUITButton = uibutton(app.GAMEPanel, 'push');
+            app.QUITButton.ButtonPushedFcn = createCallbackFcn(app, @QUITButtonPushed, true);
+            app.QUITButton.BackgroundColor = [0.8706 0.1216 0.1216];
+            app.QUITButton.FontWeight = 'bold';
+            app.QUITButton.Position = [562 424 48 22];
+            app.QUITButton.Text = 'QUIT';
+
+            % Create GAMEOVERPanel
+            app.GAMEOVERPanel = uipanel(app.UIFigure);
+            app.GAMEOVERPanel.TitlePosition = 'centertop';
+            app.GAMEOVERPanel.Title = 'GAME OVER';
+            app.GAMEOVERPanel.Visible = 'off';
+            app.GAMEOVERPanel.BackgroundColor = [0.749 0.9804 0.9608];
+            app.GAMEOVERPanel.Position = [1 1 640 480];
+
+            % Create RESULTEditFieldLabel
+            app.RESULTEditFieldLabel = uilabel(app.GAMEOVERPanel);
+            app.RESULTEditFieldLabel.HorizontalAlignment = 'right';
+            app.RESULTEditFieldLabel.FontSize = 18;
+            app.RESULTEditFieldLabel.FontWeight = 'bold';
+            app.RESULTEditFieldLabel.Position = [242 276 76 23];
+            app.RESULTEditFieldLabel.Text = 'RESULT';
+
+            % Create RESULTEditField
+            app.RESULTEditField = uieditfield(app.GAMEOVERPanel, 'text');
+            app.RESULTEditField.HorizontalAlignment = 'center';
+            app.RESULTEditField.FontName = 'Comic Sans MS';
+            app.RESULTEditField.FontSize = 30;
+            app.RESULTEditField.FontAngle = 'italic';
+            app.RESULTEditField.BackgroundColor = [1 1 0];
+            app.RESULTEditField.Position = [0 231 640 42];
+
+            % Create PLAYAGAINButton
+            app.PLAYAGAINButton = uibutton(app.GAMEOVERPanel, 'push');
+            app.PLAYAGAINButton.ButtonPushedFcn = createCallbackFcn(app, @PLAYAGAINButtonPushed, true);
+            app.PLAYAGAINButton.BackgroundColor = [0.3608 0.8392 0.5137];
+            app.PLAYAGAINButton.FontName = 'Courier New';
+            app.PLAYAGAINButton.FontSize = 24;
+            app.PLAYAGAINButton.FontWeight = 'bold';
+            app.PLAYAGAINButton.Position = [241 170 158 37];
+            app.PLAYAGAINButton.Text = 'PLAY AGAIN';
+
+            % Create QUITButton_2
+            app.QUITButton_2 = uibutton(app.GAMEOVERPanel, 'push');
+            app.QUITButton_2.ButtonPushedFcn = createCallbackFcn(app, @QUITButton_2Pushed, true);
+            app.QUITButton_2.BackgroundColor = [0.8706 0.1216 0.1216];
+            app.QUITButton_2.FontName = 'Courier New';
+            app.QUITButton_2.FontSize = 24;
+            app.QUITButton_2.FontWeight = 'bold';
+            app.QUITButton_2.Position = [271 110 100 37];
+            app.QUITButton_2.Text = 'QUIT';
+
+            % Show the figure after all components are created
+            app.UIFigure.Visible = 'on';
+        end
+    end
+
+    % App creation and deletion
+    methods (Access = public)
+
+        % Construct app
+        function app = game
+
+            % Create UIFigure and components
+            createComponents(app)
+
+            % Register the app with App Designer
+            registerApp(app, app.UIFigure)
+
+            if nargout == 0
+                clear app
+            end
+        end
+
+        % Code that executes before app deletion
+        function delete(app)
+
+            % Delete UIFigure when app is deleted
+            delete(app.UIFigure)
+        end
+    end
+end
